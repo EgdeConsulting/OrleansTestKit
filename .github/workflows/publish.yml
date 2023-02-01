@@ -31,7 +31,7 @@ jobs:
           echo "::set-output name=nupkg_name::$( basename ${nupkg_files[-1]} )"
       - name: Push generated packages to GitHub registry
         # working-directory: csharp
-        run: dotnet nuget push "EgdeOrleansTestKit" **/*.nupkg --skip-duplicate
+        run: dotnet nuget push "OrleansTestKit" **/*.nupkg --skip-duplicate
         env:
           NUGET_AUTH_TOKEN: ${{ github.token }}
       # - name: Publish NuGet Packages
