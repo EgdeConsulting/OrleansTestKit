@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using Orleans.Core;
 using Orleans.Runtime;
 using Orleans.Streams;
 using Orleans.TestKit.Reminders;
@@ -32,6 +30,7 @@ namespace Orleans.TestKit
 
         private readonly TestGrainLifecycle _grainLifecycle = new TestGrainLifecycle();
 
+        // ReSharper disable once CollectionNeverQueried.Local
         private readonly List<IGrainBase> _activatedGrains = new List<IGrainBase>();
 
         public TestKitSilo()
@@ -133,17 +132,21 @@ namespace Orleans.TestKit
                     break;
             }
 
-          
+
 
             //Trigger the lifecycle hook that will get the grain's state from the runtime
             await _grainLifecycle.TriggerStartAsync().ConfigureAwait(false);
 
             // Due to update the OnActivate call has to be done manually
             // not all Grains implement ILifecycle anymore
+            // ReSharper disable once ConvertTypeCheckToNullCheck
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (grain is IGrainBase)
             {
                 // Used to enable reminder context on during activate
+#pragma warning disable CS8632
                 IDisposable? reminderContext = null;
+#pragma warning restore CS8632
 
                 if (grain is IRemindable)
                 {
@@ -156,7 +159,7 @@ namespace Orleans.TestKit
                 reminderContext?.Dispose();
             }
 
-          
+
 
             return grain as T;
         }
@@ -183,7 +186,7 @@ namespace Orleans.TestKit
             return handler;
         }
 
-        
+
 
         /// <summary>
         /// Fetches Grain Context
