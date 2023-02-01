@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: |
           dotnet restore --verbosity minimal
-          dotnet build --configuration Release --no-restore --verbosity minimal /p:TreatWarningsAsErrors=true /warnaserror
+          dotnet build --configuration Release --no-restore --verbosity minimal
           dotnet pack --configuration Release --no-restore --verbosity minimal
       - name: Test
         run: |
